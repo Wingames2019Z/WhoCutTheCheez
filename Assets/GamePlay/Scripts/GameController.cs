@@ -6,6 +6,7 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] int Point;
     [SerializeField] GameObject InitialUI;
+    [SerializeField] GameObject GameOverUI;
     [SerializeField] float GasAmount;
     bool IsPlaying = false;
     bool IsReleasing = false;
@@ -30,6 +31,8 @@ public class GameController : MonoBehaviour
         GasAmount = InitialGasAmount;
     }
 
+    public bool GetIsPlaying() => IsPlaying;
+    public bool GetIsReleasing() => IsReleasing;
     // Update is called once per frame
     void Update()
     {
@@ -52,9 +55,9 @@ public class GameController : MonoBehaviour
         ReleaseGas();
         PointCheck();
         //Check Game Over
-        if (GasAmount > MaxGasAmount)
+        if (GasAmount > MaxGasAmount && IsPlaying)
         {
-            IsPlaying = false;
+            SetGameOver();
         }
     }
     void AddGas()
@@ -84,6 +87,7 @@ public class GameController : MonoBehaviour
             PointTime += AddPointTime;
         }
     }
+
     int AddPointGet()
     {
         var addPoint =(int)Mathf.Floor(ReleasingTime);
@@ -97,5 +101,11 @@ public class GameController : MonoBehaviour
     {
         InitialUI.SetActive(false);
         IsPlaying = true;
+    }
+    public void SetGameOver()
+    {
+        IsPlaying = false;
+        GameOverUI.SetActive(true);
+        Debug.Log("GameOver");
     }
 }
