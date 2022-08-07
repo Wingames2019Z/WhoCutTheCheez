@@ -54,7 +54,7 @@ public class SettingManager : MonoBehaviour
     Debug.Log("Any other platform");
 #endif
     }
-    void RateUsPressed()
+    public void RateUsPressed()
     {
         sEManager.SEPlay(SEList.Pressed);
 #if UNITY_ANDROID
@@ -65,7 +65,7 @@ public class SettingManager : MonoBehaviour
     Debug.Log("Any other platform");
 #endif
     }
-    void VibrationPressed()
+    public void VibrationPressed()
     {
         if (settingDataModel.Vibration)
         {

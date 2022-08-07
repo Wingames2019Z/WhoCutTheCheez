@@ -12,7 +12,8 @@ public class BannerAds : MonoBehaviour
     {
         MobileAds.Initialize(initStatus => { });
         shopDataModel = GameDataSystem.ShopDataLoad();
-
+        Debug.Log("shopDataModel.NoAd" + shopDataModel.NoAd);
+        Debug.Log(Application.persistentDataPath);
         if (shopDataModel.NoAd)
             return;
         this.RequestBanner();
@@ -22,7 +23,7 @@ public class BannerAds : MonoBehaviour
     private void RequestBanner()
     {
 #if UNITY_ANDROID
-        string adUnitId = "ca-app-pub-3940256099942544/6300978111";
+        string adUnitId = "ca-app-pub-3940256099942544/2934735716";
 #elif UNITY_IPHONE
             string adUnitId = "ca-app-pub-3940256099942544/2934735716";
 #else

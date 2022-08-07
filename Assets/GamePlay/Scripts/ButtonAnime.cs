@@ -12,11 +12,13 @@ public class ButtonAnime : MonoBehaviour
     [SerializeField] RectTransform ButtonRect;
     [SerializeField] float ScaleAmount = 0.2f;
     [SerializeField] UnityEvent EndEvent;
+    SEManager SEManager;
     Vector3 ScaleButton;
     bool IsPlaying = false;
     // Start is called before the first frame update
     private void Start()
     {
+        SEManager = GameObject.FindGameObjectWithTag("SEManager").GetComponent<SEManager>();
         ScaleButton = new Vector3(ScaleAmount, ScaleAmount, ScaleAmount);
         Button.onClick.AddListener(()=> { ButtonPressed();});
     }
@@ -24,6 +26,7 @@ public class ButtonAnime : MonoBehaviour
     {
         if (IsPlaying)
             return;
+        SEManager.SEPlay(SEList.Pressed);
         IsPlaying = true;
         ButtonRect.DOPunchScale(ScaleButton, 0.2f).SetEase(Ease.OutElastic)
             .OnComplete(() => EndAnime());

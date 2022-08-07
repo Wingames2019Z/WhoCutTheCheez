@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    [SerializeField] UIManager UIManager;
     [SerializeField] int Point;
     [SerializeField] GameObject InitialUI;
+    [SerializeField] GameObject PlayingUI;
     [SerializeField] GameObject GameOverUI;
+    [SerializeField] Result Result;
     [SerializeField] float GasAmount;
+    UserDataModel UserDataModel;
     bool IsPlaying = false;
     bool IsReleasing = false;
     float ReleasingTime = 0f;
     float PointTime = 0f;
-
-
 
     //GameConfig
     //-AddGas
@@ -27,6 +29,8 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        UserDataModel = GameDataSystem.UserDataLoad();
+        PlayingUI.SetActive(false);
         PointTime = AddPointTime;
         GasAmount = InitialGasAmount;
     }
@@ -38,22 +42,25 @@ public class GameController : MonoBehaviour
     {
         if (!IsPlaying)
             return;
-
         if (Input.GetMouseButtonDown(0))
         {
+            
             IsReleasing = true;
-        }
 
+            if (!UIManager.GetReleaseGasTextActive())
+                return;
+            UIManager.StopReleaseGasTextAnime();
+        }
         if (Input.GetMouseButtonUp(0))
         {
             IsReleasing = false;
             ReleasingTime = 0f;
             PointTime = AddPointTime;
         }
-
         AddGas();
         ReleaseGas();
         PointCheck();
+        GasGageSet();
         //Check Game Over
         if (GasAmount > MaxGasAmount && IsPlaying)
         {
@@ -84,10 +91,15 @@ public class GameController : MonoBehaviour
         if(ReleasingTime >= PointTime)
         {
             Point += AddPointGet();
+            UIManager.ScoreSet(Point);
+            if (UserDataModel.BestScore < Point)
+            {
+                UserDataModel.BestScore = Point;
+                UIManager.BestScoreSet(UserDataModel.BestScore);
+            }
             PointTime += AddPointTime;
         }
     }
-
     int AddPointGet()
     {
         var addPoint =(int)Mathf.Floor(ReleasingTime);
@@ -97,15 +109,33 @@ public class GameController : MonoBehaviour
         }
         return addPoint;
     }
+    void GasGageSet()
+    {
+        UIManager.GageSet(GasAmount/MaxGasAmount);
+    }
     public void StartButtonPressed()
     {
         InitialUI.SetActive(false);
+        PlayingUI.SetActive(true);
         IsPlaying = true;
+        UIManager.ReleaseGasTextAnime();
     }
     public void SetGameOver()
     {
         IsPlaying = false;
         GameOverUI.SetActive(true);
-        Debug.Log("GameOver");
+        Result.ScoreSet(Point);
+        GameDataSystem.UserDataSave(UserDataModel);
+    }
+    public void Continue()
+    {
+        var objects = GameObject.FindGameObjectsWithTag("Pedestrian");
+        foreach (var item in objects)
+        {
+            Destroy(item);
+        }
+        PointTime = AddPointTime;
+        GasAmount = InitialGasAmount;
+        IsPlaying = true;
     }
 }
