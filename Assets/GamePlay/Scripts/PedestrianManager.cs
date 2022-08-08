@@ -35,8 +35,14 @@ public class PedestrianManager : MonoBehaviour
     {
         var positon = SpawnPositonSet();
         var target = - positon;
-        var pedestrian = Instantiate(Pedestrian, new Vector3(positon, 0,0), Quaternion.identity);
-        pedestrian.InitialSet(1f,target); 
+        var rotation = 90;
+        if(target < 0)
+        {
+            rotation = rotation * -1;
+        }
+
+        var pedestrian = Instantiate(Pedestrian, new Vector3(positon, 0, 2f), Quaternion.Euler(0f, rotation, 0f));
+        pedestrian.InitialSet(0.5f,target); 
     }
 
     float SpawnPositonSet()

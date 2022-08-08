@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    [SerializeField] GasSoundManager GasSoundManager;
     [SerializeField] UIManager UIManager;
+    [SerializeField] Animator MainCharaAnimetor;
     [SerializeField] int Point;
     [SerializeField] GameObject InitialUI;
     [SerializeField] GameObject PlayingUI;
@@ -19,8 +21,8 @@ public class GameController : MonoBehaviour
 
     //GameConfig
     //-AddGas
-    private readonly float InitialGasAmount = 0f;
-    private readonly float MaxGasAmount = 10f;
+    private readonly float InitialGasAmount = 50f;
+    private readonly float MaxGasAmount = 100f;
     private readonly float AddGasAmount = 1f;
     //-ReleaseGas
     private readonly float ReleaseGasAmount = 1f;
@@ -46,7 +48,7 @@ public class GameController : MonoBehaviour
         {
             
             IsReleasing = true;
-
+            MainCharaAnimetor.SetBool("IsRelease", true);
             if (!UIManager.GetReleaseGasTextActive())
                 return;
             UIManager.StopReleaseGasTextAnime();
@@ -54,6 +56,7 @@ public class GameController : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             IsReleasing = false;
+            MainCharaAnimetor.SetBool("IsRelease", false);
             ReleasingTime = 0f;
             PointTime = AddPointTime;
         }
@@ -123,7 +126,10 @@ public class GameController : MonoBehaviour
     public void SetGameOver()
     {
         IsPlaying = false;
+        IsReleasing = false;
         GameOverUI.SetActive(true);
+        MainCharaAnimetor.SetBool("GameOver", true);
+        GasSoundManager.GameOverSound();
         Result.ScoreSet(Point);
         GameDataSystem.UserDataSave(UserDataModel);
     }

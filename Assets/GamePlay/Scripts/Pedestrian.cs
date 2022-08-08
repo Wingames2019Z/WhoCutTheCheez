@@ -5,8 +5,9 @@ using DG.Tweening;
 
 public class Pedestrian : MonoBehaviour
 {
+    [SerializeField] Animator Animator;
     GameController GameController;
-    private float DangerZone = 2f;
+    private float DangerZone = 0.5f;
 
     float Speed;
     float TargetPosition;
@@ -18,12 +19,20 @@ public class Pedestrian : MonoBehaviour
     }
     void Update()
     {
-        if (GameController.GetIsReleasing() && IsInDangerZone() && GameController.GetIsPlaying())
+        if (!GameController.GetIsPlaying())
+            return;
+
+        if (GameController.GetIsReleasing() && IsInDangerZone())
         {
             GameController.SetGameOver();
+            GameOverAnimeSet();
         }
     }
-
+    void GameOverAnimeSet()
+    {
+        Animator.SetBool("GameOver", true);
+        this.transform.rotation = Quaternion.Euler(0, 180, 0);
+    }
     bool IsInDangerZone()
     {
         var inDangerZone = false;

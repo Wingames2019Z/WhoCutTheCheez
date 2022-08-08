@@ -11,6 +11,7 @@ public class Result : MonoBehaviour
     [SerializeField] GameController GameController;
     [SerializeField] TextMeshProUGUI ScoreText;
     [SerializeField] RewardAds RewardAds;
+    [SerializeField] InterstitialAds InterstitialAds;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +30,7 @@ public class Result : MonoBehaviour
     }
     public void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        InterstitialAds.Show(()=> SceneManager.LoadScene(SceneManager.GetActiveScene().name));
     }
     public void Continue()
     {
