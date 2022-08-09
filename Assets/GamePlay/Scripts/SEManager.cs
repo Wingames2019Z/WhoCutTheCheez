@@ -39,6 +39,9 @@ public class SEManager : MonoBehaviour
             case SEList.Applause:
                 audioSource.PlayOneShot(SE[3]);
                 break;
+            case SEList.Oh:
+                audioSource.PlayOneShot(SE[4]);
+                break;
         }
 
     }
@@ -49,6 +52,7 @@ public enum SEList
     Pressed = 0,
     GameClear = 1,
     Congratulation = 2,
-    Applause = 3
+    Applause = 3,
+    Oh = 4
 
 }

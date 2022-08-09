@@ -6,6 +6,7 @@ using DG.Tweening;
 public class Pedestrian : MonoBehaviour
 {
     [SerializeField] Animator Animator;
+    [SerializeField] SEManager SEManager;
     GameController GameController;
     private float DangerZone = 0.5f;
 
@@ -15,7 +16,9 @@ public class Pedestrian : MonoBehaviour
     void Start()
     {
         GameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-        
+        SEManager = GameObject.FindGameObjectWithTag("SEManager").GetComponent<SEManager>();
+
+
     }
     void Update()
     {
@@ -34,6 +37,7 @@ public class Pedestrian : MonoBehaviour
     }
     void SetAnime()
     {
+        SEManager.SEPlay(SEList.Oh);
         tween.Kill();
         Animator.SetBool("GameOver", true);
         this.transform.rotation = Quaternion.Euler(0, 180, 0);
@@ -44,6 +48,7 @@ public class Pedestrian : MonoBehaviour
         if(this.transform.position.x < DangerZone && this.transform.position.x > -DangerZone)
         {
             inDangerZone = true;
+
             AllAnimeSetGameOver();
         }
         return inDangerZone;

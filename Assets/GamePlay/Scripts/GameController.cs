@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     [SerializeField] GasSoundManager GasSoundManager;
+    [SerializeField] SEManager SEManager;
     [SerializeField] EffectManager EffectManager;
     [SerializeField] UIManager UIManager;
     [SerializeField] Animator MainCharaAnimetor;
