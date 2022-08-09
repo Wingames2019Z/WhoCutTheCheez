@@ -148,8 +148,17 @@ public class GameController : MonoBehaviour
     }
     public void Continue()
     {
+        MainCharaAnimetor.SetBool("GameOver", false);
+        MainCharaAnimetor.Play("Blink");
+        MainCharaAnimetor.Play("SittingIdle");
         var objects = GameObject.FindGameObjectsWithTag("Pedestrian");
         foreach (var item in objects)
+        {
+            Destroy(item);
+        }
+
+        var gasObjects = GameObject.FindGameObjectsWithTag("Effect");
+        foreach (var item in gasObjects)
         {
             Destroy(item);
         }
