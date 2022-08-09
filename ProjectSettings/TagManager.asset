@@ -7,6 +7,7 @@ TagManager:
   - Canvas
   - SEManager
   - Pedestrian
+  - object
   layers:
   - Default
   - TransparentFX
@@ -43,4 +44,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Effect
+    uniqueID: 3599374433
     locked: 0

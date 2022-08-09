@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     [SerializeField] GasSoundManager GasSoundManager;
+    [SerializeField] EffectManager EffectManager;
     [SerializeField] UIManager UIManager;
     [SerializeField] Animator MainCharaAnimetor;
     [SerializeField] int Point;
@@ -46,7 +47,7 @@ public class GameController : MonoBehaviour
             return;
         if (Input.GetMouseButtonDown(0))
         {
-            
+
             IsReleasing = true;
             MainCharaAnimetor.SetBool("IsRelease", true);
             if (!UIManager.GetReleaseGasTextActive())
@@ -93,8 +94,13 @@ public class GameController : MonoBehaviour
     {
         if(ReleasingTime >= PointTime)
         {
-            Point += AddPointGet();
+            
+            var addPoint = AddPointGet();
+            Point += addPoint;
+            EffectManager.InstantiatePointEffect(addPoint);
+            EffectManager.InstantiateGas();
             UIManager.ScoreSet(Point);
+
             if (UserDataModel.BestScore < Point)
             {
                 UserDataModel.BestScore = Point;
@@ -128,10 +134,17 @@ public class GameController : MonoBehaviour
         IsPlaying = false;
         IsReleasing = false;
         GameOverUI.SetActive(true);
-        MainCharaAnimetor.SetBool("GameOver", true);
+
         GasSoundManager.GameOverSound();
+        EffectManager.InstantiateGas();
         Result.ScoreSet(Point);
         GameDataSystem.UserDataSave(UserDataModel);
+
+        Invoke(nameof(SetAnime), 0.8f);
+    }
+    void SetAnime()
+    {
+        MainCharaAnimetor.SetBool("GameOver", true);
     }
     public void Continue()
     {

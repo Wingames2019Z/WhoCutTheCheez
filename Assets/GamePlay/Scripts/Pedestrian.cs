@@ -28,8 +28,13 @@ public class Pedestrian : MonoBehaviour
             GameOverAnimeSet();
         }
     }
-    void GameOverAnimeSet()
+    public void GameOverAnimeSet()
     {
+        Invoke(nameof(SetAnime), 0.3f);
+    }
+    void SetAnime()
+    {
+        tween.Kill();
         Animator.SetBool("GameOver", true);
         this.transform.rotation = Quaternion.Euler(0, 180, 0);
     }
@@ -39,9 +44,17 @@ public class Pedestrian : MonoBehaviour
         if(this.transform.position.x < DangerZone && this.transform.position.x > -DangerZone)
         {
             inDangerZone = true;
-            tween.Kill();
+            AllAnimeSetGameOver();
         }
         return inDangerZone;
+    }
+    void AllAnimeSetGameOver()
+    {
+        var GameObjects = GameObject.FindGameObjectsWithTag("Pedestrian");
+        foreach (var item in GameObjects)
+        {
+            item.GetComponent<Pedestrian>().GameOverAnimeSet();
+        }
     }
     void Move()
     {
