@@ -11,9 +11,11 @@ public class SettingManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI SEText;
     [SerializeField] float ScaleAmount = 0.2f;
     [SerializeField] SEManager sEManager;
+    [SerializeField] GasSoundManager GasSoundManager;
     [SerializeField] RectTransform SettingSheet;
-    Vector3 ScaleButton;
     SettingDataModel settingDataModel;
+    Vector3 ScaleButton;
+
 
     // Start is called before the first frame update
     void Start()
@@ -43,9 +45,8 @@ public class SettingManager : MonoBehaviour
         }
     }
 
-    void OurGamePressed()
+    public void OurGamePressed()
     {
-        sEManager.SEPlay(SEList.Pressed);
 #if UNITY_ANDROID
         Application.OpenURL("https://play.google.com/store/apps/developer?id=wingames2019");
 #elif UNITY_IPHONE
@@ -56,7 +57,6 @@ public class SettingManager : MonoBehaviour
     }
     public void RateUsPressed()
     {
-        sEManager.SEPlay(SEList.Pressed);
 #if UNITY_ANDROID
         Application.OpenURL("https://play.google.com/store/apps/details?id=com.Wingames.InstantMemory");
 #elif UNITY_IPHONE
@@ -76,12 +76,12 @@ public class SettingManager : MonoBehaviour
             settingDataModel.Vibration = true;
             VibrationMng.ShortVibration();
         }
-        sEManager.SEPlay(SEList.Pressed);
+
         GameDataSystem.SettingDataSave(settingDataModel);
         TextSet();
     }
 
-    void SEPressed()
+    public void SEPressed()
     {
         if (settingDataModel.Sounds)
         {
@@ -93,8 +93,8 @@ public class SettingManager : MonoBehaviour
         }
         GameDataSystem.SettingDataSave(settingDataModel);
         sEManager.SetSettingDataModel(settingDataModel.Sounds);
+        GasSoundManager.SetSettingDataModel(settingDataModel.Sounds);
         TextSet();
-        sEManager.SEPlay(SEList.Pressed);
     }
     public bool CheckSE() => settingDataModel.Sounds;
 

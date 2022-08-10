@@ -7,10 +7,17 @@ public class GasSoundManager : MonoBehaviour
     [SerializeField] GameController GameController;
     [SerializeField] AudioSource AudioSource;
     [SerializeField] AudioClip []GasSounds;
+    SettingDataModel settingDataModel;
+    void Start()
+    {
+        settingDataModel = GameDataSystem.SettingDataLoad();
+    }
 
-    // Update is called once per frame
     private void Update()
     {
+        if (!settingDataModel.Sounds)
+            return;
+
         if (!GameController.GetIsPlaying())
             return;
 
@@ -27,8 +34,14 @@ public class GasSoundManager : MonoBehaviour
             AudioSource.Stop();
         }
     }
+    public void SetSettingDataModel(bool _bool)
+    {
+        settingDataModel.Sounds = _bool;
+    }
     public void GameOverSound()
     {
+        if (!settingDataModel.Sounds)
+            return;
         AudioSource.Play();
         AudioSource.PlayOneShot(GetGasSound());
     }
@@ -37,5 +50,4 @@ public class GasSoundManager : MonoBehaviour
         var num = Random.Range(0, GasSounds.Length);
         return GasSounds[num];
     }
-
 }
