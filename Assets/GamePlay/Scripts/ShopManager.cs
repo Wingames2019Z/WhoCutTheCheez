@@ -71,7 +71,6 @@ public class ShopManager : MonoBehaviour
         sequence.Append(ShopSheet.transform.DOScale(Vector3.zero, AnimeDuration).SetEase(Ease.InBack))
                 .Join(ShopCover.DOFade(0f, AnimeDuration))
                 .OnComplete(()=> { SetActiveSheet(false); });
-
     }
     void SetActiveSheet(bool state)
     {

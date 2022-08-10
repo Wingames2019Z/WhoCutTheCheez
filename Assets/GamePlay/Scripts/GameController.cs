@@ -13,18 +13,22 @@ public class GameController : MonoBehaviour
     [SerializeField] GameObject InitialUI;
     [SerializeField] GameObject PlayingUI;
     [SerializeField] GameObject GameOverUI;
+    [SerializeField] GameObject DanzerZone;
     [SerializeField] Result Result;
     [SerializeField] float GasAmount;
     UserDataModel UserDataModel;
     bool IsPlaying = false;
     bool IsReleasing = false;
-    float ReleasingTime = 0f;
-    float PointTime = 0f;
+    bool IsOverFlow = false;
+    [SerializeField] float ReleasingTime = 0f;
+    [SerializeField] float PointTime = 0f;
+
+    
 
     //GameConfig
     //-AddGas
-    private readonly float InitialGasAmount = 50f;
-    private readonly float MaxGasAmount = 100f;
+    private readonly float InitialGasAmount = 0f;
+    private readonly float MaxGasAmount = 10f;
     private readonly float AddGasAmount = 1f;
     //-ReleaseGas
     private readonly float ReleaseGasAmount = 1f;
@@ -48,7 +52,6 @@ public class GameController : MonoBehaviour
             return;
         if (Input.GetMouseButtonDown(0))
         {
-
             IsReleasing = true;
             MainCharaAnimetor.SetBool("IsRelease", true);
             if (!UIManager.GetReleaseGasTextActive())
@@ -57,6 +60,9 @@ public class GameController : MonoBehaviour
         }
         if (Input.GetMouseButtonUp(0))
         {
+            if (IsOverFlow)
+                return;
+
             IsReleasing = false;
             MainCharaAnimetor.SetBool("IsRelease", false);
             ReleasingTime = 0f;
@@ -69,7 +75,7 @@ public class GameController : MonoBehaviour
         //Check Game Over
         if (GasAmount > MaxGasAmount && IsPlaying)
         {
-            SetGameOver();
+            OverFlow();
         }
     }
     void AddGas()
@@ -87,6 +93,10 @@ public class GameController : MonoBehaviour
             if(GasAmount < 0)
             {
                 GasAmount = 0;
+                if (IsOverFlow)
+                {
+                    IsOverFlow = false;
+                }
             }
             ReleasingTime += Time.deltaTime;
         }
@@ -94,8 +104,7 @@ public class GameController : MonoBehaviour
     void PointCheck()
     {
         if(ReleasingTime >= PointTime)
-        {
-            
+        {      
             var addPoint = AddPointGet();
             Point += addPoint;
             EffectManager.InstantiatePointEffect(addPoint);
@@ -129,7 +138,15 @@ public class GameController : MonoBehaviour
         PlayingUI.SetActive(true);
         IsPlaying = true;
         UIManager.ReleaseGasTextAnime();
+        DanzerZone.SetActive(true);
     }
+    public void OverFlow()
+    {
+        MainCharaAnimetor.SetBool("OverFlow", true);
+        IsReleasing = true;
+        IsOverFlow = true;
+    }
+
     public void SetGameOver()
     {
         IsPlaying = false;
@@ -150,6 +167,7 @@ public class GameController : MonoBehaviour
     public void Continue()
     {
         MainCharaAnimetor.SetBool("GameOver", false);
+        MainCharaAnimetor.SetBool("OverFlow", false);
         MainCharaAnimetor.Play("Blink");
         MainCharaAnimetor.Play("SittingIdle");
         var objects = GameObject.FindGameObjectsWithTag("Pedestrian");

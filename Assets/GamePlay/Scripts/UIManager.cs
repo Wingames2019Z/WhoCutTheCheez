@@ -52,6 +52,17 @@ public class UIManager : MonoBehaviour
     public void GageSet(float amount)
     {
         Gage.fillAmount = amount;
+        if(Gage.fillAmount >= 0 && Gage.fillAmount < 0.6f)
+        {
+            Gage.color = Color.green;
+        }
+        else if (Gage.fillAmount >= 0.6f && Gage.fillAmount < 0.85f)
+        {
+            Gage.color = Color.yellow;
+        }
+        else if (Gage.fillAmount >= 0.85f)
+        {
+            Gage.color = Color.red;
+        }
     }
-
 }

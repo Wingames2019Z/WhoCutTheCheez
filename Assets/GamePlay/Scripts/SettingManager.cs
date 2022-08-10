@@ -7,19 +7,23 @@ using DG.Tweening;
 using TMPro;
 public class SettingManager : MonoBehaviour
 {
+    [SerializeField] GameObject SettingSheet;
+    [SerializeField] Image SettingCover;
+
     [SerializeField] TextMeshProUGUI VibrationText;
     [SerializeField] TextMeshProUGUI SEText;
     [SerializeField] float ScaleAmount = 0.2f;
     [SerializeField] SEManager sEManager;
     [SerializeField] GasSoundManager GasSoundManager;
-    [SerializeField] RectTransform SettingSheet;
+
     SettingDataModel settingDataModel;
     Vector3 ScaleButton;
-
-
+    Sequence sequence;
+    float AnimeDuration = 0.2f;
     // Start is called before the first frame update
     void Start()
     {
+        SettingSheet.transform.localScale = Vector3.zero;
         settingDataModel = GameDataSystem.SettingDataLoad();
         TextSet();
     }
@@ -98,13 +102,25 @@ public class SettingManager : MonoBehaviour
     }
     public bool CheckSE() => settingDataModel.Sounds;
 
-    public void OpenUI()
+    public void SettingOpen()
     {
-        SettingSheet.gameObject.SetActive(true);
-    }
-    public void CloseUI()
-    {
-        SettingSheet.gameObject.SetActive(false);
+        SetActiveSheet(true);
+        sequence = DOTween.Sequence();
+        sequence.Append(SettingSheet.transform.DOScale(Vector3.one, AnimeDuration).SetEase(Ease.OutBack))
+                .Join(SettingCover.DOFade(0.4f, AnimeDuration));
 
+
+    }
+    public void SettingClose()
+    {
+        sequence = DOTween.Sequence();
+        sequence.Append(SettingSheet.transform.DOScale(Vector3.zero, AnimeDuration).SetEase(Ease.InBack))
+                .Join(SettingCover.DOFade(0f, AnimeDuration))
+                .OnComplete(() => { SetActiveSheet(false); });
+    }
+    void SetActiveSheet(bool state)
+    {
+        SettingSheet.SetActive(state);
+        SettingCover.gameObject.SetActive(state);
     }
 }
