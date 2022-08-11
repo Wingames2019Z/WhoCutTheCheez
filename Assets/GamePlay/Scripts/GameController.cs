@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     [SerializeField] GasSoundManager GasSoundManager;
+    [SerializeField] PedestrianManager PedestrianManager;
     [SerializeField] SEManager SEManager;
     [SerializeField] EffectManager EffectManager;
     [SerializeField] UIManager UIManager;
@@ -16,6 +17,8 @@ public class GameController : MonoBehaviour
     [SerializeField] GameObject DanzerZone;
     [SerializeField] Result Result;
     [SerializeField] float GasAmount;
+    [SerializeField] int[] DifficultyLevel;
+    [SerializeField] int Level;
     UserDataModel UserDataModel;
     bool IsPlaying = false;
     bool IsReleasing = false;
@@ -23,12 +26,10 @@ public class GameController : MonoBehaviour
     [SerializeField] float ReleasingTime = 0f;
     [SerializeField] float PointTime = 0f;
 
-    
-
     //GameConfig
     //-AddGas
     private readonly float InitialGasAmount = 0f;
-    private readonly float MaxGasAmount = 10f;
+    private readonly float MaxGasAmount = 5f;
     private readonly float AddGasAmount = 1f;
     //-ReleaseGas
     private readonly float ReleaseGasAmount = 1f;
@@ -41,8 +42,9 @@ public class GameController : MonoBehaviour
         PlayingUI.SetActive(false);
         PointTime = AddPointTime;
         GasAmount = InitialGasAmount;
+        PedestrianManager.SpawnSetting(Level);
     }
-
+    public int GetLevel() => Level;
     public bool GetIsPlaying() => IsPlaying;
     public bool GetIsReleasing() => IsReleasing;
     // Update is called once per frame
@@ -62,7 +64,7 @@ public class GameController : MonoBehaviour
         {
             if (IsOverFlow)
                 return;
-
+            NearMissCheck();
             IsReleasing = false;
             MainCharaAnimetor.SetBool("IsRelease", false);
             ReleasingTime = 0f;
@@ -104,13 +106,15 @@ public class GameController : MonoBehaviour
     void PointCheck()
     {
         if(ReleasingTime >= PointTime)
-        {      
-            var addPoint = AddPointGet();
+        {
+            //var addPoint = AddPointGet();
+            var addPoint = 1;
             Point += addPoint;
+            LevelSetting(Point);
             EffectManager.InstantiatePointEffect(addPoint);
             EffectManager.InstantiateGas();
             UIManager.ScoreSet(Point);
-
+            PedestrianManager.SpawnSetting(Level);
             if (UserDataModel.BestScore < Point)
             {
                 UserDataModel.BestScore = Point;
@@ -118,6 +122,23 @@ public class GameController : MonoBehaviour
             }
             PointTime += AddPointTime;
         }
+    }
+    void NearMissCheck()
+    {
+        var obj = GameObject.FindGameObjectsWithTag("Pedestrian");
+        foreach (var item in obj)
+        {
+            item.GetComponent<Pedestrian>().NearMissCheck();
+        }
+    }
+
+    public void NearMiss(float xPosition)
+    {
+        var nearMissPoint = 2;
+        EffectManager.InstantiateNearMissEffect(xPosition);
+        Point += nearMissPoint;
+        LevelSetting(Point);
+        UIManager.ScoreSet(Point);
     }
     int AddPointGet()
     {
@@ -184,5 +205,34 @@ public class GameController : MonoBehaviour
         PointTime = AddPointTime;
         GasAmount = InitialGasAmount;
         IsPlaying = true;
+    }
+
+    public void LevelSetting(int score)
+    {
+        if (score > DifficultyLevel[0] && score <= DifficultyLevel[1])
+        {
+            Level = 0;
+        }
+        else if (score > DifficultyLevel[1] && score <= DifficultyLevel[2])
+        {
+            Level = 1;
+        }
+        else if (score > DifficultyLevel[2] && score <= DifficultyLevel[3])
+        {
+            Level = 2;
+        }
+        else if (score > DifficultyLevel[3] && score <= DifficultyLevel[4])
+        {
+            Level = 3;
+        }
+        else if (score > DifficultyLevel[4] && score <= DifficultyLevel[5])
+        {
+            Level = 4;
+        }
+        else if (score > DifficultyLevel[5])
+        {
+            Level = 5;
+        }
+
     }
 }

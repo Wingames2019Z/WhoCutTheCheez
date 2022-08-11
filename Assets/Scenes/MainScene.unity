@@ -343,6 +343,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameController: {fileID: 528253871}
   Pedestrian: {fileID: 6825959219668614997, guid: 2b8994b574491654db472ddece8cc215, type: 3}
+  SpawnInterval:
+  - 7
+  - 5
+  - 4
+  - 3
+  - 2.5
+  - 2
+  PedestrianSpeed:
+  - 0.5
+  - 0.75
+  - 1
+  - 1.25
+  - 1.5
+  - 1.75
 --- !u!1 &110306667
 GameObject:
   m_ObjectHideFlags: 0
@@ -1378,6 +1392,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GasSoundManager: {fileID: 110306668}
+  PedestrianManager: {fileID: 97101237}
   SEManager: {fileID: 0}
   EffectManager: {fileID: 1388527326}
   UIManager: {fileID: 1723658398}
@@ -1389,6 +1404,8 @@ MonoBehaviour:
   DanzerZone: {fileID: 1724710493}
   Result: {fileID: 4588081331980054384}
   GasAmount: 0
+  DifficultyLevel: 00000000050000000a000000140000001e00000028000000
+  Level: 0
   ReleasingTime: 0
   PointTime: 0
 --- !u!4 &528253872
@@ -2361,7 +2378,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 600}
+  m_AnchoredPosition: {x: 0, y: 630}
   m_SizeDelta: {x: 0, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &827494865
@@ -2522,7 +2539,7 @@ MonoBehaviour:
   m_text: 9999999999pt
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3113,8 +3130,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1007073050}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.7, z: 2.3}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
+  m_LocalPosition: {x: 0, y: 1.04, z: 2.3}
+  m_LocalScale: {x: 0.12, y: 0.12, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1402851744}
@@ -4306,9 +4323,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GasEffect: {fileID: 753880801021377602, guid: e4da8839ebcdbf64dbc930f88de8f4fc, type: 3}
+  NearMissEffect: {fileID: 6007509482706250201, guid: dad01f0e8f0bcce44b23ddd3b52830ca, type: 3}
   PointEffect: {fileID: -6772123738390881437, guid: d08ce18478c1c494da5895330312d758, type: 3}
   InstantiatePoint: {fileID: 1875290992}
-  Range: 0.1
+  XPoint: 0.1
+  Range: 0.07
 --- !u!4 &1388527327
 Transform:
   m_ObjectHideFlags: 0
@@ -5435,6 +5454,7 @@ MonoBehaviour:
   BestScoreText: {fileID: 1405304490}
   ScoreText: {fileID: 827494865}
   ReleaseGasText: {fileID: 1018523137}
+  GameController: {fileID: 528253871}
   Gage: {fileID: 1488964070}
 --- !u!1 &1724353152
 GameObject:

@@ -10,11 +10,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI BestScoreText;
     [SerializeField] TextMeshProUGUI ScoreText;
     [SerializeField] TextMeshProUGUI ReleaseGasText;
+    [SerializeField] GameController GameController;
+
     [SerializeField] Image Gage;
     UserDataModel UserDataModel;
     
     Vector3 ScoreScale;
     float ScoreScaleAmount = 0.2f;
+    int Level;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,8 +40,50 @@ public class UIManager : MonoBehaviour
     }
     public void ScoreSet(int score)
     {
-        ScoreText.text = score + "pt";
+        ScoreText.text =  score + "pt";
         ScoreText.transform.DOPunchScale(ScoreScale, 0.2f);
+        TextSizeSet();
+    }
+
+    void TextSizeSet()
+    {
+        var level = GameController.GetLevel();
+
+        if (Level == level)
+            return;
+        Level = level;
+        switch (Level)
+        {
+            case 0:
+                ScoreScaleAmount = 0.2f;
+                ScoreText.fontSize = 65;
+                break;
+            case 1:
+                ScoreScaleAmount = 0.4f;
+                ScoreText.fontSize = 70;
+                break;
+            case 2:
+                ScoreScaleAmount = 0.5f;
+                ScoreText.fontSize = 80;
+                break;
+            case 3:
+                ScoreScaleAmount = 0.6f;
+                ScoreText.fontSize = 90;
+                break;
+            case 4:
+                ScoreScaleAmount = 0.7f;
+                ScoreText.fontSize = 100;
+                break;
+            case 5:
+                ScoreScaleAmount = 0.8f;
+                ScoreText.fontSize = 110;
+                break;
+            default:
+                ScoreScaleAmount = 0.2f;
+                ScoreText.fontSize = 65;
+                break;
+        }
+        ScoreScale = new Vector3(ScoreScaleAmount, ScoreScaleAmount, ScoreScaleAmount);
     }
     public void ReleaseGasTextAnime()
     {

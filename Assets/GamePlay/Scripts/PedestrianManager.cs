@@ -6,11 +6,16 @@ public class PedestrianManager : MonoBehaviour
 {
     [SerializeField] GameController GameController;
     [SerializeField] Pedestrian Pedestrian;
+
+    [SerializeField] private float []SpawnInterval;
+    [SerializeField] private float []PedestrianSpeed;
+
     private float CurrentTime = 0f;
     private float StartSpawnTime = 2f;
-    private float SpawnInterval = 1f;
 
-    
+    private int Level = 0;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -27,10 +32,11 @@ public class PedestrianManager : MonoBehaviour
         CurrentTime -= Time.deltaTime;
         if(CurrentTime < 0)
         {
-            CurrentTime = SpawnInterval;
+            CurrentTime = SpawnInterval[Level];
             SpawnPedestrian();
         }
     }
+    public int GetLevel() => Level;
     void SpawnPedestrian()
     {
         var positon = SpawnPositonSet();
@@ -43,7 +49,7 @@ public class PedestrianManager : MonoBehaviour
         }
 
         var pedestrian = Instantiate(Pedestrian, positon, Quaternion.Euler(0f, rotation, 0f));
-        pedestrian.InitialSet(0.5f,target); 
+        pedestrian.InitialSet(PedestrianSpeed[Level], target); 
     }
 
     Vector3 SpawnPositonSet()
@@ -56,7 +62,13 @@ public class PedestrianManager : MonoBehaviour
             positionX = -positionX;
             positionZ = 1.5f;
         }
-
         return new Vector3(positionX, 0 ,positionZ);
+    }
+
+    public void SpawnSetting(int level)
+    {
+        Level = level;
+
+        Debug.Log("Level" + Level + "/SpawnInterval" + SpawnInterval[Level] + "/PedestrianSpeed" + PedestrianSpeed[Level]);
     }
 }

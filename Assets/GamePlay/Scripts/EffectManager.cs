@@ -5,8 +5,10 @@ using UnityEngine;
 public class EffectManager : MonoBehaviour
 {
     [SerializeField] GameObject GasEffect;
+    [SerializeField] GameObject NearMissEffect;
     [SerializeField] PointEffect PointEffect;
     [SerializeField] Transform InstantiatePoint;
+    [SerializeField] float XPoint;
     [SerializeField] float Range;
     public void InstantiateGas()
     {
@@ -17,9 +19,29 @@ public class EffectManager : MonoBehaviour
         var pointEffect = Instantiate(PointEffect, new Vector3(XPositionSet(), 0.9f, -1), Quaternion.identity);
         pointEffect.InitialSet(point);
     }
+    public void InstantiateNearMissEffect(float xPoint)
+    {
+        Instantiate(NearMissEffect, new Vector3(XPositionNearMiss(xPoint), 1.2f, -1), Quaternion.identity);
+    }
     float XPositionSet()
     {
-        var x = Random.Range(-Range, Range);
+        var x = XPoint;
+        var num = Random.Range(0, 2);
+        if(num == 1)
+        {
+            x = - XPoint;
+        }
+        x = Random.Range(-Range + x, x + Range);
+        return x;
+    }
+    float XPositionNearMiss(float xPoint)
+    {
+        var x = XPoint;
+        if (xPoint < 0)
+        {
+            x = -XPoint;
+        }
+
         return x;
     }
 }
