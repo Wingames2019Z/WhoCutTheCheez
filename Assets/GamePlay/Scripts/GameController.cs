@@ -34,7 +34,7 @@ public class GameController : MonoBehaviour
     //-ReleaseGas
     private readonly float ReleaseGasAmount = 1f;
     //-Point
-    private float AddPointTime = 0.5f;
+    private float AddPointTime = 0.25f;
     // Start is called before the first frame update
     void Start()
     {
@@ -134,7 +134,7 @@ public class GameController : MonoBehaviour
 
     public void NearMiss(float xPosition)
     {
-        var nearMissPoint = 2;
+        var nearMissPoint = 5;
         EffectManager.InstantiateNearMissEffect(xPosition);
         Point += nearMissPoint;
         LevelSetting(Point);

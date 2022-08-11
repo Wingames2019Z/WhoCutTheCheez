@@ -8,7 +8,9 @@ public class PedestrianManager : MonoBehaviour
     [SerializeField] Pedestrian Pedestrian;
 
     [SerializeField] private float []SpawnInterval;
+    [SerializeField] private float []SpawnIntervalRandom;
     [SerializeField] private float []PedestrianSpeed;
+    [SerializeField] private float []PedestrianSpeedRandom;
 
     private float CurrentTime = 0f;
     private float StartSpawnTime = 2f;
@@ -32,8 +34,14 @@ public class PedestrianManager : MonoBehaviour
         CurrentTime -= Time.deltaTime;
         if(CurrentTime < 0)
         {
-            CurrentTime = SpawnInterval[Level];
+            CurrentTime = SpawnIntervalSet();
             SpawnPedestrian();
+        }
+
+        float SpawnIntervalSet()
+        {
+            var spawnTime = Random.Range(SpawnInterval[Level], SpawnInterval[Level] + SpawnIntervalRandom[Level]);
+            return spawnTime;
         }
     }
     public int GetLevel() => Level;
@@ -49,7 +57,8 @@ public class PedestrianManager : MonoBehaviour
         }
 
         var pedestrian = Instantiate(Pedestrian, positon, Quaternion.Euler(0f, rotation, 0f));
-        pedestrian.InitialSet(PedestrianSpeed[Level], target); 
+        var speed = Random.Range(PedestrianSpeed[Level], PedestrianSpeed[Level] + PedestrianSpeedRandom[Level]);
+        pedestrian.InitialSet(speed, target); 
     }
 
     Vector3 SpawnPositonSet()
@@ -68,7 +77,5 @@ public class PedestrianManager : MonoBehaviour
     public void SpawnSetting(int level)
     {
         Level = level;
-
-        Debug.Log("Level" + Level + "/SpawnInterval" + SpawnInterval[Level] + "/PedestrianSpeed" + PedestrianSpeed[Level]);
     }
 }

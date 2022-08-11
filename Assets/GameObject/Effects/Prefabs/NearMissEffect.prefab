@@ -103,7 +103,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'NEAR MISS
 
-    +2'
+    +5'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 9026b8c248feb2c46967f4eb515cc2ca, type: 2}

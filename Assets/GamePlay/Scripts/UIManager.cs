@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     Vector3 ScoreScale;
     float ScoreScaleAmount = 0.2f;
     int Level;
+    Tween tween;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,9 +42,17 @@ public class UIManager : MonoBehaviour
     public void ScoreSet(int score)
     {
         ScoreText.text =  score + "pt";
-        ScoreText.transform.DOPunchScale(ScoreScale, 0.2f);
+        ScoreAnime();
         TextSizeSet();
     }
+    void ScoreAnime()
+    {
+        tween.Kill();
+        ScoreText.transform.localScale = Vector3.one;
+        tween = ScoreText.transform.DOPunchScale(ScoreScale, 0.2f);
+    }
+
+
 
     void TextSizeSet()
     {
@@ -59,23 +68,23 @@ public class UIManager : MonoBehaviour
                 ScoreText.fontSize = 65;
                 break;
             case 1:
-                ScoreScaleAmount = 0.4f;
+                ScoreScaleAmount = 0.3f;
                 ScoreText.fontSize = 70;
                 break;
             case 2:
-                ScoreScaleAmount = 0.5f;
+                ScoreScaleAmount = 0.4f;
                 ScoreText.fontSize = 80;
                 break;
             case 3:
-                ScoreScaleAmount = 0.6f;
+                ScoreScaleAmount = 0.5f;
                 ScoreText.fontSize = 90;
                 break;
             case 4:
-                ScoreScaleAmount = 0.7f;
+                ScoreScaleAmount = 0.6f;
                 ScoreText.fontSize = 100;
                 break;
             case 5:
-                ScoreScaleAmount = 0.8f;
+                ScoreScaleAmount = 0.7f;
                 ScoreText.fontSize = 110;
                 break;
             default:

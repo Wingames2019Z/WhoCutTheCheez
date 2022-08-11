@@ -16,12 +16,12 @@ public class EffectManager : MonoBehaviour
     }
     public void InstantiatePointEffect(int point)
     {
-        var pointEffect = Instantiate(PointEffect, new Vector3(XPositionSet(), 0.9f, -1), Quaternion.identity);
+        var pointEffect = Instantiate(PointEffect, new Vector3(XPositionSet(), YPositionSet(), -1), Quaternion.identity);
         pointEffect.InitialSet(point);
     }
     public void InstantiateNearMissEffect(float xPoint)
     {
-        Instantiate(NearMissEffect, new Vector3(XPositionNearMiss(xPoint), 1.2f, -1), Quaternion.identity);
+        Instantiate(NearMissEffect, new Vector3(XPositionNearMiss(xPoint), 1.3f, -1), Quaternion.identity);
     }
     float XPositionSet()
     {
@@ -31,8 +31,14 @@ public class EffectManager : MonoBehaviour
         {
             x = - XPoint;
         }
-        x = Random.Range(-Range + x, x + Range);
+        x = Random.Range(-Range + x, x);
         return x;
+    }
+    float YPositionSet()
+    {
+        var y = Random.Range(0.9f, 0.85f);
+
+        return y;
     }
     float XPositionNearMiss(float xPoint)
     {
