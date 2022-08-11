@@ -8,9 +8,9 @@ public class PedestrianManager : MonoBehaviour
     [SerializeField] Pedestrian Pedestrian;
     private float CurrentTime = 0f;
     private float StartSpawnTime = 2f;
-    private float SpawnInterval = 5f;
+    private float SpawnInterval = 1f;
 
-    float SpawnPosition = 5f;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -34,26 +34,29 @@ public class PedestrianManager : MonoBehaviour
     void SpawnPedestrian()
     {
         var positon = SpawnPositonSet();
-        var target = - positon;
+        var target = - positon.x;
         var rotation = 90;
+
         if(target < 0)
         {
             rotation = rotation * -1;
         }
 
-        var pedestrian = Instantiate(Pedestrian, new Vector3(positon, 0, 2f), Quaternion.Euler(0f, rotation, 0f));
+        var pedestrian = Instantiate(Pedestrian, positon, Quaternion.Euler(0f, rotation, 0f));
         pedestrian.InitialSet(0.5f,target); 
     }
 
-    float SpawnPositonSet()
+    Vector3 SpawnPositonSet()
     {
+        var positionX = 2f;
+        var positionZ = 2f;
         var num = Random.Range(0, 2);
-        var position = SpawnPosition;
         if (num == 0)
         {
-            position = -SpawnPosition;
+            positionX = -positionX;
+            positionZ = 1.5f;
         }
 
-        return position;
+        return new Vector3(positionX, 0 ,positionZ);
     }
 }
