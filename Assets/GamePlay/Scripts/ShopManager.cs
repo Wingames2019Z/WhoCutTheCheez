@@ -53,11 +53,15 @@ public class ShopManager : MonoBehaviour
     {
         ShopDataModel.NoAd = true;
         GameDataSystem.ShopDataSave(ShopDataModel);
-        NoAdsButton.SetActive(false);
+        StoreClose();
     }
 
     public void StoreOpen()
     {
+        if (ShopDataModel.NoAd)
+        {
+            NoAdsButton.SetActive(false);
+        }
         SetActiveSheet(true);
         sequence = DOTween.Sequence();
         sequence.Append(ShopSheet.transform.DOScale(Vector3.one, AnimeDuration).SetEase(Ease.OutBack))

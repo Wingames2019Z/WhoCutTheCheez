@@ -38,6 +38,7 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = 60;
         UserDataModel = GameDataSystem.UserDataLoad();
         PlayingUI.SetActive(false);
         PointTime = AddPointTime;
@@ -173,7 +174,7 @@ public class GameController : MonoBehaviour
         IsPlaying = false;
         IsReleasing = false;
         GameOverUI.SetActive(true);
-
+        ReleasingTime = 0f;
         GasSoundManager.GameOverSound();
         EffectManager.InstantiateGas();
         Result.ScoreSet(Point);

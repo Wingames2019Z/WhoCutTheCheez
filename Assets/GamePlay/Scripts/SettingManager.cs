@@ -62,7 +62,7 @@ public class SettingManager : MonoBehaviour
     public void RateUsPressed()
     {
 #if UNITY_ANDROID
-        Application.OpenURL("https://play.google.com/store/apps/details?id=com.Wingames.InstantMemory");
+        Application.OpenURL("https://play.google.com/store/apps/details?id=com.Wingames.WhoCutTheCheez");
 #elif UNITY_IPHONE
         Application.OpenURL("https://apps.apple.com/app/instantmemory/id1453314953");
 #else
@@ -82,6 +82,7 @@ public class SettingManager : MonoBehaviour
         }
 
         GameDataSystem.SettingDataSave(settingDataModel);
+        GasSoundManager.SetSettingDataModel(settingDataModel);
         TextSet();
     }
 
@@ -97,7 +98,7 @@ public class SettingManager : MonoBehaviour
         }
         GameDataSystem.SettingDataSave(settingDataModel);
         sEManager.SetSettingDataModel(settingDataModel.Sounds);
-        GasSoundManager.SetSettingDataModel(settingDataModel.Sounds);
+        GasSoundManager.SetSettingDataModel(settingDataModel);
         TextSet();
     }
     public bool CheckSE() => settingDataModel.Sounds;

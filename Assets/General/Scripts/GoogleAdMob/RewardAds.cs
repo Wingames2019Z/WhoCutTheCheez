@@ -14,7 +14,7 @@ public class RewardAds : MonoBehaviour
     void Start()
     {
 #if UNITY_ANDROID
-        adUnitId = "ca-app-pub-3940256099942544/1712485313";
+        adUnitId = "ca-app-pub-2267873372430897/4787666240";
 #elif UNITY_IPHONE
             adUnitId = "ca-app-pub-3940256099942544/1712485313";
 #else

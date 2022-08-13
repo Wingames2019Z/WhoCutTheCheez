@@ -8936,6 +8936,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameController: {fileID: 528253871}
+  RewardButton: {fileID: 2096452220}
   ScoreText: {fileID: 872759820}
   RewardAds: {fileID: 1335460762}
   InterstitialAds: {fileID: 1335460764}

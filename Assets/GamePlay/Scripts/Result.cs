@@ -9,14 +9,11 @@ using DG.Tweening;
 public class Result : MonoBehaviour
 {
     [SerializeField] GameController GameController;
+    [SerializeField] GameObject RewardButton;
     [SerializeField] TextMeshProUGUI ScoreText;
     [SerializeField] RewardAds RewardAds;
     [SerializeField] InterstitialAds InterstitialAds;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    int RewardTime = 0;
     public void ScoreSet(int score)
     {
         ScoreText.text = score.ToString() + "pt";
@@ -25,15 +22,29 @@ public class Result : MonoBehaviour
 
     void Anime()
     {
+        if(RewardTime > 0)
+        {
+            RewardButton.SetActive(false);
+        }
         this.transform.DOScale(Vector3.one, 0.5f)
             .SetEase(Ease.OutBack);
     }
     public void Restart()
     {
-        InterstitialAds.Show(()=> SceneManager.LoadScene(SceneManager.GetActiveScene().name));
+        var ShopDataModel = GameDataSystem.ShopDataLoad();
+        if (ShopDataModel.NoAd)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+        else
+        {
+            InterstitialAds.Show(() => SceneManager.LoadScene(SceneManager.GetActiveScene().name));
+        }
+
     }
     public void Continue()
     {
+        RewardTime++;
         RewardAds.Show(EndAction);
 
         void EndAction()

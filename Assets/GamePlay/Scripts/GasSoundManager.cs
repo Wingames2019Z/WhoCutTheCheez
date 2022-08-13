@@ -27,6 +27,9 @@ public class GasSoundManager : MonoBehaviour
             if (!AudioSource.isPlaying)
             {
                 AudioSource.PlayOneShot(GetGasSound());
+                if (!settingDataModel.Vibration)
+                    return;
+                VibrationMng.ShortVibration();
             }
         }
         else
@@ -34,9 +37,9 @@ public class GasSoundManager : MonoBehaviour
             AudioSource.Stop();
         }
     }
-    public void SetSettingDataModel(bool _bool)
+    public void SetSettingDataModel(SettingDataModel _settingDataModel)
     {
-        settingDataModel.Sounds = _bool;
+        settingDataModel = _settingDataModel;
     }
     public void GameOverSound()
     {
